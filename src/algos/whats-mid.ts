@@ -10,7 +10,7 @@ export const handler = async (ctx: AppContext, params: QueryParams) => {
     .selectFrom('post')
     .selectAll()
     .orderBy('indexedAt', 'desc')
-    .orderBy('cid', 'desc')
+    // .orderBy('cid', 'desc')
     .limit(params.limit)
 
   if (params.cursor) {
@@ -22,7 +22,7 @@ export const handler = async (ctx: AppContext, params: QueryParams) => {
     builder = builder
       .where('post.indexedAt', '<', timeStr)
       .orWhere((qb) => qb.where('post.indexedAt', '=', timeStr))
-      .where('post.cid', '<', cid)
+      // .where('post.cid', '<', cid)
   }
   const res = await builder.execute()
 

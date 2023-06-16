@@ -29,14 +29,16 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
 			uri: string;
 			cid: string;
 			value: Record<any, any>;
+			repostedAt: string;
 		}>[] = allReposted.map(async (reposted) => {
 			const { did, rkey } = parseUri(reposted.uri);
 			const repost = await Agent.api.com.atproto.repo.getRecord({ collection: 'app.bsky.feed.repost', repo: did, rkey });
 
 			const repostUri = (repost.data.value as any).subject.uri;
 			const { did: repostDid, rkey: repostRkey } = parseUri(repostUri);
-			const post = await Agent.getPost({ repo: repostDid, rkey: repostRkey });
-			return post;
+			let post = await Agent.getPost({ repo: repostDid, rkey: repostRkey });
+			let postWithRepostedDate = (repost.data.value as any).createdAt ?? new Date().toISOString()
+			return postWithRepostedDate;
 		});
 
 		const allPosts = await Promise.all(getPostOps);
@@ -47,7 +49,7 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
 				cid: post.cid,
 				replyParent: null,
 				replyRoot: null,
-				indexedAt: new Date().toISOString(),
+				indexedAt: post.repostedAt
 			};
 		});
 		if (postsToDelete.length > 0) {
