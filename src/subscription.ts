@@ -37,7 +37,8 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
 			const repostUri = (repost.data.value as any).subject.uri;
 			const { did: repostDid, rkey: repostRkey } = parseUri(repostUri);
 			let post = await Agent.getPost({ repo: repostDid, rkey: repostRkey });
-			let postWithRepostedDate = (repost.data.value as any).createdAt ?? new Date().toISOString()
+			let postWithRepostedDate:any = {...post};
+			postWithRepostedDate.repostedAt = (repost.data.value as any).createdAt ?? new Date().toISOString()
 			return postWithRepostedDate;
 		});
 
