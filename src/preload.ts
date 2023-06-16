@@ -21,7 +21,8 @@ export const preload = async (db: Database) => {
 };
 
 const midPreload = async (posts: FeedViewPost[] = [], cursor?: string): Promise<FeedViewPost[]> => {
-	const feed = await Agent.getAuthorFeed({ actor: process.env.BSKY_DID!, cursor, limit: 10 });
+	const preloadLimit = process.env.ENV === 'PROD' ? 100 : 10;
+	const feed = await Agent.getAuthorFeed({ actor: process.env.BSKY_DID!, cursor, limit: preloadLimit });
 	const currentPosts = [...posts, ...feed.data.feed];
 	if (cursor) {
 		//Only go back 200 posts so quit if we have a cursor from a previous run
