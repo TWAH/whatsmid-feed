@@ -1,3 +1,10 @@
+# ⚠️ DEPRECATED ⚠️
+
+This is a naive implementation and What's Mid has since been updated to use the firehose instead of timeline API. The new version isn't public - create an issue or tag me on bsky ([tomh.social](http://tomh.social)) if you would like the new version to be open sourced.
+
+---
+---
+
 # ATProto Feed Generator
 
 This is a starter kit for creating ATProto Feed Generators. It's not feature complete, but should give you a good starting ground off of which to build and deploy a feed.
